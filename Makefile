@@ -1,0 +1,68 @@
+NAME = philo
+
+CC = cc
+
+CFLAGS = -Wall -Wextra -Werror -pthread
+
+# Colors
+BLUE = \033[0;94m
+GREEN = \033[0;92m
+YELLOW = \033[0;93m
+RED = \033[0;91m
+RESET = \033[0m
+
+SRCS = 	main.c        \
+		parsing.c     \
+		utils.c       \
+		init.c        \
+		actions.c     \
+		routine.c     \
+		simulation.c  \
+		time_utils.c
+
+OBJ_DIR = obj
+
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	@echo "$(GREEN)✅ Philosophers compiled successfully!$(RESET)"
+	@echo "$(YELLOW)💡 Usage: ./$(NAME) <philos> <die> <eat> <sleep> [meals]$(RESET)"
+
+$(OBJ_DIR)/%.o: %.c philo.h
+	@mkdir -p $(OBJ_DIR)
+	@if [ ! -f .banner_shown ]; then \
+		echo "$(BLUE)"; \
+		echo "╔══════════════════════════════════════════════════╗"; \
+		echo "║                                                  ║"; \
+		echo "║   ██████╗ ██╗  ██╗██╗██╗      ██████╗ ███████╗   ║"; \
+		echo "║   ██╔══██╗██║  ██║██║██║     ██╔═══██╗██╔════╝   ║"; \
+		echo "║   ██████╔╝███████║██║██║     ██║   ██║███████╗   ║"; \
+		echo "║   ██╔═══╝ ██╔══██║██║██║     ██║   ██║╚════██║   ║"; \
+		echo "║   ██║     ██║  ██║██║███████╗╚██████╔╝███████║   ║"; \
+		echo "║   ╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚══════╝   ║"; \
+		echo "║                                                  ║"; \
+		echo "║              Dining Philosophers                 ║"; \
+		echo "║                                                  ║"; \
+		echo "╚══════════════════════════════════════════════════╝"; \
+		echo "$(RESET)"; \
+		touch .banner_shown; \
+	fi
+	@printf "$(BLUE)Compiling: $(RESET)%-30s" "$<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN)✓$(RESET)"
+
+clean:
+	@$(RM) -r $(OBJ_DIR)
+	@$(RM) .banner_shown
+	@echo "$(RED)🗑️  Object files cleaned$(RESET)"
+
+fclean: clean
+	@$(RM) $(NAME)
+	@echo "$(RED)🗑️  Executable removed$(RESET)"
+
+re: fclean all
+
+.PHONY: all clean fclean re
