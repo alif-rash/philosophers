@@ -17,9 +17,7 @@ void	*philosopher_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->data->philo_count > 100)
-		ft_usleep((philo->id % 3) * 2);
-	else if (philo->id % 2 == 0)
+	if (philo->id % 2 == 0)
 		ft_usleep(1);
 	while (!check_death(philo->data))
 	{

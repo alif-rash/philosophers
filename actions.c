@@ -18,6 +18,8 @@ void	philo_eat(t_philo *philo)
 	print_status(philo, "has taken a fork");
 	if (philo->left_fork == philo->right_fork)
 	{
+		while (!check_death(philo->data))
+			ft_usleep(1);
 		pthread_mutex_unlock(philo->left_fork);
 		return ;
 	}
