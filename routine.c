@@ -31,6 +31,7 @@ void	*philosopher_routine(void *arg)
 	return (NULL);
 }
 
+/** Checks if philosopher has died due to starvation */
 static int	check_philosopher_death(t_philo *philo)
 {
 	long	current_time;
@@ -53,6 +54,7 @@ static int	check_philosopher_death(t_philo *philo)
 	return (0);
 }
 
+/// Verifies if all philosophers have eaten the required number of meals
 static int	check_all_ate(t_data *data)
 {
 	int	i;

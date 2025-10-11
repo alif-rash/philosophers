@@ -12,6 +12,7 @@
 
 #include "philo.h"
 
+/* Initializes mutexes for forks and other shared resources */
 static int	init_mutexes(t_data *data)
 {
 	int	i;
@@ -35,6 +36,7 @@ static int	init_mutexes(t_data *data)
 	return (0);
 }
 
+/** Initializes the data structure with command line arguments @param data pointer to main data structure @param av array of command line arguments @return int success status */
 int	init_data(t_data *data, char **av)
 {
 	data->philo_count = (int)ft_atoi(av[1]);
@@ -54,12 +56,14 @@ int	init_data(t_data *data, char **av)
 	return (0);
 }
 
+/* @brief Assigns forks to a philosopher */
 static void	assign_forks(t_philo *philo, t_data *data, int i)
 {
 	philo->left_fork = &data->forks[i];
 	philo->right_fork = &data->forks[(i + 1) % data->philo_count];
 }
 
+/// @brief Initializes philosophers data structures and allocates necessary memory
 int	init_philos(t_data *data)
 {
 	int	i;
@@ -81,6 +85,7 @@ int	init_philos(t_data *data)
 	return (0);
 }
 
+/** Performs cleanup operations and frees all allocated resources in the data structure */
 void	cleanup_all(t_data *data)
 {
 	int	i;

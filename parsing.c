@@ -12,6 +12,7 @@
 
 #include "philo.h"
 
+/** Validates if input arguments are within valid ranges */
 static int	ft_validate_range(char **av)
 {
 	if (ft_atoi(av[1]) > 200)
@@ -32,6 +33,7 @@ static int	ft_validate_range(char **av)
 	return (1);
 }
 
+/** Validates command line arguments passed to program */
 int	ft_validate_args(int ac, char **av)
 {
 	int	i;

@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-/*@brief Creates threads for philosophers and monitor*/
+/*Creates threads for philosophers and monitor*/
 static int	create_threads(t_data *data, pthread_t *monitor)
 {
 	int	i;
