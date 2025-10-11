@@ -21,7 +21,7 @@ static int	ft_validate_range(char **av)
 	}
 	if (ft_atoi(av[2]) < 60 || ft_atoi(av[3]) < 60 || ft_atoi(av[4]) < 60)
 	{
-		printf("Error: Time values must be at least 60ms\n");
+		printf("Warning: Time values must be at least 60ms\n");
 		return (0);
 	}
 	if (av[5] && ft_atoi(av[5]) <= 0)

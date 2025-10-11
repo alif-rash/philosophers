@@ -31,168 +31,106 @@
 
 typedef struct s_philo
 {
-	int				id;              /**< Philosopher ID (1 to N) */
-	int				meals_eaten;     /**< Number of meals consumed */
-	int				eating;          /**< Flag: 1 if currently eating, 0 otherwise */
-	long			last_meal_time;  /**< Timestamp of last meal start (ms) */
-	pthread_t		thread;          /**< Thread handle for this philosopher */
-	pthread_mutex_t	*left_fork;      /**< Pointer to left fork mutex */
-	pthread_mutex_t	*right_fork;     /**< Pointer to right fork mutex */
-	struct s_data	*data;           /**< Pointer to shared simulation data */
+	int				id;
+	int				meals_eaten;
+	int				eating;
+	long			last_meal_time;
+	pthread_t		thread;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	struct s_data	*data;
 }	t_philo;
 
 typedef struct s_data
 {
-	int				philo_count;     /**< Total number of philosophers */
-	int				time_to_die;     /**< Time (ms) before a philosopher dies of starvation */
-	int				time_to_eat;     /**< Time (ms) required to eat */
-	int				time_to_sleep;   /**< Time (ms) spent sleeping */
-	int				meals_required;  /**< Required meals per philosopher (-1 = unlimited) */
-	int				someone_died;    /**< Flag: 1 if any philosopher died */
-	long			start_time;      /**< Simulation start timestamp (ms) */
-	pthread_mutex_t	*forks;          /**< Array of fork mutexes */
-	pthread_mutex_t	write_lock;      /**< Mutex for synchronized console output */
-	pthread_mutex_t	death_lock;      /**< Mutex for death flag access */
-	pthread_mutex_t	meal_lock;       /**< Mutex for meal counting/timing */
-	t_philo			*philos;         /**< Array of philosophers */
+	int				philo_count;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals_required;
+	int				someone_died;
+	long			start_time;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	write_lock;
+	pthread_mutex_t	death_lock;
+	pthread_mutex_t	meal_lock;
+	t_philo			*philos;
 }	t_data;
 
-/* ========================================================================== */
-/*                            PARSING & VALIDATION                            */
-/* ========================================================================== */
+/*
+** ============================================================================
+** PARSING & VALIDATION
+** ============================================================================
+*/
 
-/**
- * @brief Validates command-line arguments
- * @param ac Argument count
- * @param av Argument vector
- * @return 1 if valid, 0 otherwise
- */
+/* Validates command-line arguments */
 int		ft_validate_args(int ac, char **av);
-
-/**
- * @brief Checks if a string contains only numeric characters
- * @param str String to validate
- * @return 1 if numeric, 0 otherwise
- */
+/* Checks if string contains only numeric characters */
 int		ft_is_numeric(char *str);
-
-/**
- * @brief Converts string to long integer with overflow protection
- * @param str String to convert
- * @return Converted long integer, or -1 on overflow
- */
+/* Converts string to long with overflow protection */
 long	ft_atoi(char *str);
 
-/* ========================================================================== */
-/*                         INITIALIZATION & CLEANUP                           */
-/* ========================================================================== */
+/*
+** ============================================================================
+** INITIALIZATION & CLEANUP
+** ============================================================================
+*/
 
-/**
- * @brief Initializes simulation data structure from arguments
- * @param data Pointer to data structure to initialize
- * @param av Argument vector containing simulation parameters
- * @return 0 on success, 1 on failure
- */
+/* Initializes simulation data from arguments */
 int		init_data(t_data *data, char **av);
-
-/**
- * @brief Initializes philosopher array and assigns forks
- * @param data Pointer to simulation data
- * @return 0 on success, 1 on failure
- */
+/* Initializes philosopher array and assigns forks */
 int		init_philos(t_data *data);
-
-/**
- * @brief Cleans up all allocated resources and destroys mutexes
- * @param data Pointer to simulation data
- */
+/* Cleans up all resources and destroys mutexes */
 void	cleanup_all(t_data *data);
 
-/* ========================================================================== */
-/*                            SIMULATION CONTROL                              */
-/* ========================================================================== */
+/*
+** ============================================================================
+** SIMULATION & THREADS
+** ============================================================================
+*/
 
-/**
- * @brief Starts the simulation by creating threads
- * @param data Pointer to simulation data
- * @return 0 on success, 1 on failure
- */
+/* Starts simulation by creating threads */
 int		start_simulation(t_data *data);
-
-/**
- * @brief Main routine executed by each philosopher thread
- * @param arg Pointer to t_philo structure (philosopher data)
- * @return NULL
- */
+/* Main routine for each philosopher thread */
 void	*philosopher_routine(void *arg);
-
-/**
- * @brief Monitor thread routine - checks for death and completion
- * @param arg Pointer to t_data structure (simulation data)
- * @return NULL
- */
+/* Monitor thread checks for death/completion */
 void	*monitor_routine(void *arg);
 
-/* ========================================================================== */
-/*                             TIME UTILITIES                                 */
-/* ========================================================================== */
+/*
+** ============================================================================
+** TIME UTILITIES
+** ============================================================================
+*/
 
-/**
- * @brief Gets current time in milliseconds
- * @return Current timestamp in milliseconds since epoch
- */
+/* Gets current time in milliseconds */
 long	get_cur_time(void);
-
-/**
- * @brief Custom sleep function with precise timing
- * @param milliseconds Time to sleep in milliseconds
- */
+/* Custom sleep with precise timing */
 void	ft_usleep(long milliseconds);
-
-/**
- * @brief Prints philosopher status with timestamp (thread-safe)
- * @param philo Pointer to philosopher
- * @param status Status string to print (e.g., "is eating")
- */
+/* Prints philosopher status (thread-safe) */
 void	print_status(t_philo *philo, char *status);
 
-/* ========================================================================== */
-/*                          SYNCHRONIZATION HELPERS                           */
-/* ========================================================================== */
+/*
+** ============================================================================
+** SYNCHRONIZATION
+** ============================================================================
+*/
 
-/**
- * @brief Safely checks if someone died (thread-safe)
- * @param data Pointer to simulation data
- * @return 1 if someone died, 0 otherwise
- */
+/* Checks if someone died (thread-safe) */
 int		check_death(t_data *data);
-
-/**
- * @brief Sets death flag (thread-safe)
- * @param data Pointer to simulation data
- */
+/* Sets death flag (thread-safe) */
 void	set_death(t_data *data);
 
-/* ========================================================================== */
-/*                          PHILOSOPHER ACTIONS                               */
-/* ========================================================================== */
+/*
+** ============================================================================
+** PHILOSOPHER ACTIONS
+** ============================================================================
+*/
 
-/**
- * @brief Philosopher eating action (acquires forks, eats, releases forks)
- * @param philo Pointer to philosopher
- */
+/* Philosopher eating action */
 void	philo_eat(t_philo *philo);
-
-/**
- * @brief Philosopher sleeping action
- * @param philo Pointer to philosopher
- */
+/* Philosopher sleeping action */
 void	philo_sleep(t_philo *philo);
-
-/**
- * @brief Philosopher thinking action
- * @param philo Pointer to philosopher
- */
+/* Philosopher thinking action */
 void	philo_think(t_philo *philo);
 
 #endif

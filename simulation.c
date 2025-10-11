@@ -12,6 +12,7 @@
 
 #include "philo.h"
 
+/*@brief Creates threads for philosophers and monitor*/
 static int	create_threads(t_data *data, pthread_t *monitor)
 {
 	int	i;
@@ -29,6 +30,7 @@ static int	create_threads(t_data *data, pthread_t *monitor)
 	return (0);
 }
 
+/* Joins all philosopher threads and monitor thread */
 static int	join_threads(t_data *data, pthread_t monitor)
 {
 	int	i;
@@ -45,6 +47,7 @@ static int	join_threads(t_data *data, pthread_t monitor)
 	return (0);
 }
 
+/* Starts the dining philosophers simulation */
 int	start_simulation(t_data *data)
 {
 	pthread_t	monitor;
