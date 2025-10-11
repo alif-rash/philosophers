@@ -10,13 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/**
- * @file philo.h
- * @brief Dining Philosophers Problem - Main header file
- * @author raalifa
- * @date 2025/09/12
- */
-
 #ifndef PHILO_H
 # define PHILO_H
 
