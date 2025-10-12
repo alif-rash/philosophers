@@ -6,7 +6,7 @@
 /*   By: raalifa <raalifa@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 10:23:05 by raalifa           #+#    #+#             */
-/*   Updated: 2025/10/12 10:23:05 by raalifa          ###   ########.fr       */
+/*   Updated: 2025/10/12 16:12:47 by raalifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ void	philo_eat(t_philo *philo)
 	print_status(philo, "has taken a fork");
 	if (philo->left_fork == philo->right_fork)
 	{
-		while (!check_death(philo->data))
-			ft_usleep(1);
 		pthread_mutex_unlock(philo->left_fork);
+		ft_usleep(philo->data->time_to_die + 1);
 		return ;
 	}
 	pthread_mutex_lock(philo->right_fork);

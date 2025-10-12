@@ -6,7 +6,7 @@
 /*   By: raalifa <raalifa@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 10:24:10 by raalifa           #+#    #+#             */
-/*   Updated: 2025/10/12 10:24:10 by raalifa          ###   ########.fr       */
+/*   Updated: 2025/10/12 16:10:16 by raalifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,12 @@ void	print_status(t_philo *philo, char *status)
 {
 	long	timestamp;
 
-	if (check_death(philo->data))
-		return ;
 	pthread_mutex_lock(&philo->data->write_lock);
+	if (check_death(philo->data))
+	{
+		pthread_mutex_unlock(&philo->data->write_lock);
+		return ;
+	}
 	timestamp = get_cur_time() - philo->data->start_time;
 	printf("%ld %d %s\n", timestamp, philo->id, status);
 	pthread_mutex_unlock(&philo->data->write_lock);

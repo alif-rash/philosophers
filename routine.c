@@ -6,7 +6,7 @@
 /*   By: raalifa <raalifa@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 10:23:59 by raalifa           #+#    #+#             */
-/*   Updated: 2025/10/12 10:23:59 by raalifa          ###   ########.fr       */
+/*   Updated: 2025/10/12 16:27:03 by raalifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,19 @@ static int	check_all_ate(t_data *data)
 
 	if (data->meals_required == -1)
 		return (0);
+	pthread_mutex_lock(&data->meal_lock);
 	all_ate = 1;
 	i = 0;
 	while (i < data->philo_count)
 	{
-		pthread_mutex_lock(&data->meal_lock);
 		if (data->philos[i].meals_eaten < data->meals_required)
+		{
 			all_ate = 0;
-		pthread_mutex_unlock(&data->meal_lock);
+			break ;
+		}
 		i++;
 	}
+	pthread_mutex_unlock(&data->meal_lock);
 	if (all_ate)
 		set_death(data);
 	return (all_ate);

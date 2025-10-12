@@ -33,33 +33,17 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)✅ Philosophers compiled successfully!$(RESET)"
 	@echo "$(YELLOW)💡 Usage: ./$(NAME) <philos> <die> <eat> <sleep> [meals]$(RESET)"
 
-$(OBJ_DIR)/%.o: %.c philo.h
-	@mkdir -p $(OBJ_DIR)
-	@if [ ! -f .banner_shown ]; then \
-		echo "$(BLUE)"; \
-		echo "╔══════════════════════════════════════════════════╗"; \
-		echo "║                                                  ║"; \
-		echo "║   ██████╗ ██╗  ██╗██╗██╗      ██████╗ ███████╗   ║"; \
-		echo "║   ██╔══██╗██║  ██║██║██║     ██╔═══██╗██╔════╝   ║"; \
-		echo "║   ██████╔╝███████║██║██║     ██║   ██║███████╗   ║"; \
-		echo "║   ██╔═══╝ ██╔══██║██║██║     ██║   ██║╚════██║   ║"; \
-		echo "║   ██║     ██║  ██║██║███████╗╚██████╔╝███████║   ║"; \
-		echo "║   ╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚══════╝   ║"; \
-		echo "║                                                  ║"; \
-		echo "║              Dining Philosophers                 ║"; \
-		echo "║                                                  ║"; \
-		echo "╚══════════════════════════════════════════════════╝"; \
-		echo "$(RESET)"; \
-		touch .banner_shown; \
-	fi
+$(OBJ_DIR)/%.o: %.c philo.h | $(OBJ_DIR)
 	@printf "$(BLUE)Compiling: $(RESET)%-30s" "$<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(GREEN)✓$(RESET)"
 
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
+
 clean:
-	@if [ -d $(OBJ_DIR) ] || [ -f .banner_shown ]; then \
+	@if [ -d $(OBJ_DIR) ]; then \
 		$(RM) -r $(OBJ_DIR); \
-		$(RM) .banner_shown; \
 		echo "$(RED)🗑️  Object files cleaned$(RESET)"; \
 	else \
 		echo "$(YELLOW)⚠️  Nothing to clean$(RESET)"; \
