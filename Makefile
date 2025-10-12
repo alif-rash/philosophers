@@ -2,7 +2,9 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror
+
+LDFLAGS = -pthread
 
 # Colors
 BLUE = \033[0;94m
@@ -27,7 +29,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 	@echo "$(GREEN)✅ Philosophers compiled successfully!$(RESET)"
 	@echo "$(YELLOW)💡 Usage: ./$(NAME) <philos> <die> <eat> <sleep> [meals]$(RESET)"
 
@@ -55,13 +57,19 @@ $(OBJ_DIR)/%.o: %.c philo.h
 	@echo "$(GREEN)✓$(RESET)"
 
 clean:
-	@$(RM) -r $(OBJ_DIR)
-	@$(RM) .banner_shown
-	@echo "$(RED)🗑️  Object files cleaned$(RESET)"
+	@if [ -d $(OBJ_DIR) ] || [ -f .banner_shown ]; then \
+		$(RM) -r $(OBJ_DIR); \
+		$(RM) .banner_shown; \
+		echo "$(RED)🗑️  Object files cleaned$(RESET)"; \
+	else \
+		echo "$(YELLOW)⚠️  Nothing to clean$(RESET)"; \
+	fi
 
 fclean: clean
-	@$(RM) $(NAME)
-	@echo "$(RED)🗑️  Executable removed$(RESET)"
+	@if [ -f $(NAME) ]; then \
+		$(RM) $(NAME); \
+		echo "$(RED)🗑️  Executable removed$(RESET)"; \
+	fi
 
 re: fclean all
 
