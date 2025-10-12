@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raalifa <raalifa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: raalifa <raalifa@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/11 00:00:00 by raalifa           #+#    #+#             */
-/*   Updated: 2025/10/11 00:00:00 by raalifa          ###   ########.fr       */
+/*   Created: 2025/10/12 10:23:05 by raalifa           #+#    #+#             */
+/*   Updated: 2025/10/12 10:23:05 by raalifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "philo.h"
 
